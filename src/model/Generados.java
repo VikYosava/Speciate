@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Generados {
 	
-	private static final float PMutBase = 0.5f; //	[0]	 Minimo 0, máximo 1
+	private static final float PMutBase = 0.6f; //	[0]	 Minimo 0, máximo 1
 	private static final float CapAlimBase = 0.3f; //[1]	 Minimo 0, Nmax=NinicialInd*X siendo X variable por el usuario, 5 de base
 	private static final float CostAlimBase = 0.25f; //	[2]	 Mínimo 0, Nmax=NinicialInd*X siendo X variable por el usuario, 5 de base
     private static final float CMovBase = 0.6f; //	[3]	 Minimo 0, máximo 1 (Capacidad de recolección, incluir comer comida dentro del movimiento)
@@ -46,12 +46,12 @@ public class Generados {
 		writer.write("@attribute alimentCost numeric\n");
 		writer.write("@attribute movementCap numeric\n");
 		writer.write("@attribute generation integer\n");
-		writer.write("@attribute size integer\n");
-		writer.write("@attribute success {no, yes}\n\n");
-
+		writer.write("@attribute success {0, 1}\n\n");
 		writer.write("@data\n");		
     	for (PoblacionPorEspecie info : elements) {
-            info.escribirDatos(writer, filePath, probIndividuo, nGeneraciones);
+    		if(info.getGeneracion()!=0) {
+                info.escribirDatos(writer, filePath, probIndividuo, nGeneraciones);
+    		}
         }
     	
     	writer.close();
@@ -250,6 +250,7 @@ public class Generados {
 					Nreprod=cantInd;
 				}
 				alimento=alimento-Nreprod*CostAlim;
+				
 				for (int j=0; j<((int)(Nreprod*PMut)); j++) {
 	    			// LA REPRODUCCIÓN AQUI TIENE QUE SER SOLO DE LOS QUE SÍ MUTAN
 					short[] Padre=nuevoGrupo.getEspecieID(i).clone();
@@ -258,7 +259,7 @@ public class Generados {
 	    			nuevoGrupo.addGenerado(1, Hijo, padreStr, generacion, NuevoAlimento);
 	    		}
 				nuevoGrupo.setAlimentoID(i,alimento);
-				nuevoGrupo.setCantID(i,(int) (cantInd+(Nreprod-Nreprod*PMut)));
+				nuevoGrupo.setCantID(i,(int) (cantInd+(1-PMut)*Nreprod));
 			}
     		}
     		if(nuevoGrupo.getCantID(i)<0) {
