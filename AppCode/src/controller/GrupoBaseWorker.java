@@ -74,7 +74,7 @@ public class GrupoBaseWorker extends SwingWorker<List<Generados>, Graph> {
 	        publish(grafoprueba);
 	        
 	        // captura de las imagenes 1 a nrondas
-	        filePath =outputDir+"graph"+i+".png";		
+	        filePath =outputDir+"graph"+i+".png";
 	        f.writeAll(grafoprueba, filePath);
 	        filePath =outputDir+"Data"+i+".arff";
 	     
